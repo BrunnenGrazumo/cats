@@ -1,0 +1,1 @@
+web: gunicorn cats.wsgi --workers=4

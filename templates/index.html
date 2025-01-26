@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Милые котики</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<header class="header-bar">
+    <div class="header-content">
+        <!-- Левая часть с лого и текстом -->
+        <a href="/" class="brand-link">
+            <img src="{% static '/logo.png' %}" alt="Логотип" class="logo">
+            <span class="brand-text">QR-Котик</span>
+        </a>
+
+        <!-- Правая часть с иконками -->
+       <div class="social-icons">
+           {% load static %}
+    <a href="https://www.youtube.com/@l.razumova" class="social-link" style="margin-right: 10px;">
+        <img src="{% static 'icons/youtube.png' %}" alt="YouTube" class="social-icon">
+    </a>
+    <a href="https://t.me/l0v0lraz" class="social-link" style="margin-right: 10px;">
+        <img src="{% static 'icons/telegram.png' %}" alt="Telegram" class="social-icon telegram-icon">
+    </a>
+    <a href="https://ozon.ru/t/2LzlEPR" class="social-link" style="margin-right: 10px;">
+        <img src="{% static 'icons/ozon.PNG' %}" alt="Ozon" class="social-icon">
+    </a>
+</div>
+        </div>
+    </div>
+</header>
+    <!-- Основной контент -->
+<main class="main-content">
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">Мяучные предсказания</h1>
+        </div>
+
+        <div id="catContainer" class="cat-container">
+            <div class="cat-card main-font">
+                <img src="{% static 'default_cat.jpg' %}"
+                     alt="Приветственный котик"
+                     class="cat-image"
+                     onerror="this.style.display='none'">
+                <p class="cat-phrase">Получить новое предсказание</p>
+            </div>
+        </div>
+
+        <div class="button-container main-font">
+            <button class="btn btn-primary" id="loadCats">Получить предсказание от котика</button>
+        </div>
+    </div>
+    <!-- Основной текстовый блок -->
+    <div class="content-block">
+        <div class="content-text main-font">
+            <p>Делись своим результатом в соцсетях, используя хештег #qr_котик
+Не забудь вернуться завтра за новым пушистиком !</p>
+        </div>
+    </div>
+
+    <!-- Баннер -->
+    <div class="banner-container main-font">
+        <a href="https://t.me/l0v0lraz" class="banner-link">
+            <img src="{% static 'banner.jpg' %}"
+                 alt="Специальное предложение"
+                 class="banner-image">
+        </a>
+    </div>
+
+    <!-- Дополнительный текстовый блок -->
+    <div class="content-block">
+        <div class="content-text main-font">
+            <h2>Добро пожаловать на сайт «qr-котик»!</h2>
+            <p>Все ведь любят котиков ? Их милота и обаяние способны объединить весь мир! Вдохновившись этими пушистиками , я создала уникальные брелочки, которые подарят тебе улыбку в любой ситуации!
+«QR-Котик» - это не просто брелок, а маленький источник радости, созданный для того, чтобы поднимать настроение и напоминать о том, что неважно, грустный ты сегодня, весёлый, озадаченный или сердитый, всегда помни о том,
+что ты котик 💖
+
+Буду рада вашим подпискам (ссылки на мои социальные сети есть наверху страницы), ведь помимо котиков у меня много интересных творческих проектов!</p>
+        </div>
+    </div>
+
+    <!-- Розовая полоса -->
+    <div class="pink-stripe">
+        <p class="stripe-text main-font">С 🤍 Лена Разумова <span class="copyright">©</span> 2025</p>
+    </div>
+
+    <!-- Модальное окно подтверждения -->
+    <div id="confirmationModal"
+         class="modal"
+         role="dialog"
+         aria-labelledby="modalTitle"
+         aria-hidden="true">
+        <div class="modal-content">
+            <h2 id="modalTitle" class="visually-hidden">Подтверждение действия</h2>
+            <img src="{% static 'alarm.png' %}"
+                 alt="Иконка предупреждения"
+                 class="modal-image"
+                 onerror="this.style.display='none'">
+            <!--  <img src="{% static 'overlay-image.png' %}" class="modal-overlay-image" alt="Декор">-->
+            <p class="modal-text">Вы точно хотите получить новое предсказание? Первое самое точное! На новое предсказание мне потребуется больше времени. <br> Но лучше возвращайтесь завтра</p>
+            <button id="confirmButton" class="btn btn-warning">Я всё понимаю и хочу продолжить</button>
+        </div>
+    </div>
+
+    <!-- Прелоадеры -->
+    <div id="extendedLoader" class="preloader extended-loader">
+        <div class="loader">
+            <img src="{% static 'loader.gif' %}" class="preloader-gif" alt="Загрузка...">
+            <p class="loading-text">Корректируем вашу судьбу... <br> Осталось <span id="countdown">30</span> секунд</p>
+        </div>
+    </div>
+
+    <script src="{% static 'js/app.js' %}"></script>
+    </main>
+</body>
+</html>

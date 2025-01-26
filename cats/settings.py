@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'django-insecure-94r%h&f=k7$9c*#3c2t5)lz25-r9fdig(a3r3dd@ncu8jw4r-x'
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://cats-c07n.onrender.com', '192.168.0.168', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['cats-c07n.onrender.com', '192.168.0.168', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',

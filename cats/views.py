@@ -50,7 +50,7 @@ def get_random_cat_image():
         with os.scandir(cats_dir) as entries:
             cat_images = [
                 entry.name for entry in entries
-                if entry.is_file() and entry.name.lower().endswith(('.jpg', '.jpeg', '.png'))
+                if entry.is_file() and entry.name.lower().endswith(('.jpg', '.jpeg', '.png', 'webp',))
             ]
     except OSError as e:
         logger.error(f"Error reading directory: {str(e)}")

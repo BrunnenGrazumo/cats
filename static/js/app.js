@@ -254,8 +254,49 @@ document.addEventListener('DOMContentLoaded', () => {
         lastScroll = currentScroll;
     });
     // Функция для обновления отступов
+async function checkDailyReset() {
+        try {
+            const response = await fetch('/api/cats/');
+            if (!response.ok) return;
 
+            const data = await response.json();
+            if (data.is_daily_reset) {
+                localStorage.removeItem('catAppState');
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Ошибка проверки сброса:', error);
+        }
+    }
+ async function initializeApp() {
+        try {
+            // Первым делом проверяем сброс
+            await checkDailyReset();
 
+            // Восстановление состояния
+            const savedState = JSON.parse(localStorage.getItem('catAppState'));
+            if (savedState) {
+                // Проверка актуальности состояния
+                const hoursPassed = (Date.now() - savedState.timestamp) / (1000 * 60 * 60);
+                if (hoursPassed >= 24) {
+                    localStorage.removeItem('catAppState');
+                    window.location.reload();
+                    return;
+                }
+
+                state = savedState;
+                updateUI();
+            }
+
+            // ... (остальная часть инициализации)
+        } catch (error) {
+            console.error('Ошибка инициализации:', error);
+            showFatalError(error.message);
+        }
+    }
+
+    // Запускаем инициализацию
+    initializeApp();
 
 
     // Обновляем при изменении размеров

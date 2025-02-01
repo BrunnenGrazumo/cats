@@ -2,6 +2,8 @@ import re
 import os
 import random
 import logging
+import pytz
+import datetime
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -16,17 +18,28 @@ def get_daily_reset_key():
     return "last_reset_timestamp_v3"
 
 def check_daily_reset():
-    """Проверяет, нужно ли выполнить сброс"""
+    """Проверяет, наступила ли полночь по Москве"""
+    now = timezone.now().astimezone(pytz.timezone('Europe/Moscow'))
     last_reset = cache.get(get_daily_reset_key())
-    if not last_reset:
+
+    # Если сброса не было сегодня
+    if not last_reset or last_reset.astimezone(pytz.timezone('Europe/Moscow')).date() < now.date():
         return True
-    return (timezone.now() - last_reset).total_seconds() >= 86400  # 24 часа
+    return False
 
 
 def perform_daily_reset():
-    """Фиксирует время сброса с таймаутом 36 часов"""
-    cache.set(get_daily_reset_key(), timezone.now(), 60*60*36)
-    logger.info("Daily reset performed at %s", timezone.now())
+    """Фиксирует время сброса на текущую полночь"""
+    now = timezone.now().astimezone(pytz.timezone('Europe/Moscow'))
+    next_reset = now.replace(hour=0, minute=0, second=0, microsecond=0) + datetime.timedelta(days=1)
+
+    # Кэшируем до следующей полночи
+    cache.set(
+        get_daily_reset_key(),
+        next_reset,
+        timeout=int((next_reset - now).total_seconds()) + 10  # +10 секунд для надёжности
+    )
+    logger.info(f"Next reset at: {next_reset}")
 
 def home(request):
     return render(request, 'index.html')

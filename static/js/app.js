@@ -269,31 +269,51 @@ async function checkDailyReset() {
         }
     }
  async function initializeApp() {
-        try {
-            // Первым делом проверяем сброс
-            await checkDailyReset();
+    try {
+        // 1. Проверка серверного сброса
+        await checkDailyReset();
 
-            // Восстановление состояния
-            const savedState = JSON.parse(localStorage.getItem('catAppState'));
-            if (savedState) {
-                // Проверка актуальности состояния
-                const hoursPassed = (Date.now() - savedState.timestamp) / (1000 * 60 * 60);
-                if (hoursPassed >= 24) {
-                    localStorage.removeItem('catAppState');
-                    window.location.reload();
-                    return;
-                }
+        // 2. Работа с localStorage
+        const savedState = JSON.parse(localStorage.getItem('catAppState'));
 
-                state = savedState;
-                updateUI();
+        if (savedState) {
+            // 3. Проверка времени по Москве
+            const savedDate = new Date(savedState.timestamp);
+            const now = new Date();
+
+            // Приведение к московскому времени (UTC+3)
+            const savedMoscowTime = new Date(savedDate.getTime() + (3 * 60 * 60 * 1000));
+            const currentMoscowTime = new Date(now.getTime() + (3 * 60 * 60 * 1000));
+
+            // Проверка смены даты
+            if (
+                savedMoscowTime.getDate() !== currentMoscowTime.getDate() ||
+                savedMoscowTime.getMonth() !== currentMoscowTime.getMonth() ||
+                savedMoscowTime.getFullYear() !== currentMoscowTime.getFullYear()
+            ) {
+                localStorage.removeItem('catAppState');
+                window.location.reload();
+                return;
             }
 
-            // ... (остальная часть инициализации)
-        } catch (error) {
-            console.error('Ошибка инициализации:', error);
-            showFatalError(error.message);
+            // 4. Восстановление состояния
+            state = savedState;
+            updateUI();
         }
+
+        // 5. Инициализация остальных компонентов
+        if (!loadButton || !preloader || !extendedLoader) {
+            throw new Error('Критические элементы DOM не найдены');
+        }
+
+        loadButton.addEventListener('click', handleMainButtonClick);
+        confirmButton.addEventListener('click', handleConfirmation);
+
+    } catch (error) {
+        console.error('Ошибка инициализации:', error);
+        showFatalError(error.message);
     }
+}
 
     // Запускаем инициализацию
     initializeApp();

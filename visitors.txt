@@ -1,0 +1,14 @@
+{
+  "daily": {
+    "date": "2025-02-03",
+    "count": 2
+  },
+  "monthly": {
+    "month": "2025-02",
+    "count": 2
+  },
+  "yearly": {
+    "year": "2025",
+    "count": 2
+  }
+}

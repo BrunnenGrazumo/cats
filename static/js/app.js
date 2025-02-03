@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function fetchCat() {
         togglePreloader(true);
         try {
-            const response = await fetch('/api/cats/');
+            const response = await fetch('/api/cats/?t=' + Date.now());
             if (!response.ok) throw new Error(`HTTP ошибка: ${response.status}`);
 
             const data = await response.json();
@@ -255,8 +255,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     // Функция для обновления отступов
 async function checkDailyReset() {
+    const now = new Date();
+    console.log('Клиентское время:', now.toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }));
         try {
-            const response = await fetch('/api/cats/');
+            const response = await fetch('/api/cats/?t=' + Date.now());
             if (!response.ok) return;
 
             const data = await response.json();

@@ -1,10 +1,11 @@
 # middleware.py
 from django.utils import timezone
 from django.http import HttpResponseRedirect
-from cats.views import logger
-#from urllib import request
+import hashlib
+from django.utils.deprecation import MiddlewareMixin
+from .visitor_counter import update_counter
 
-#logger.info(f"User {request.session.session_key} reset at {timezone.now()}")
+
 
 class UserDailyResetMiddleware:
     def __init__(self, get_response):
@@ -36,3 +37,15 @@ class UserDailyResetMiddleware:
             return HttpResponseRedirect(request.path)
 
         return response
+
+class VisitorMiddleware(MiddlewareMixin):
+    def process_request(self, request):
+        # Генерация уникального идентификатора
+        ip = request.META.get('REMOTE_ADDR', '')
+        user_agent = request.META.get('HTTP_USER_AGENT', '')
+        visitor_hash = hashlib.sha256(f"{ip}-{user_agent}".encode()).hexdigest()
+
+        # Проверка уникальности через сессию
+        if not request.session.get('is_visited'):
+            request.session['is_visited'] = visitor_hash
+            update_counter()

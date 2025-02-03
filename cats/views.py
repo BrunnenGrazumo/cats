@@ -17,29 +17,41 @@ def get_daily_reset_key():
     """Ключ для хранения времени последнего сброса"""
     return "last_reset_timestamp_v3"
 
+def perform_daily_reset():
+    """Фиксирует время сброса на текущую полночь"""
+    moscow_tz = pytz.timezone('Europe/Moscow')
+    now = timezone.now().astimezone(moscow_tz)
+    last_reset = now.replace(hour=0, minute=0, second=0, microsecond=0)  # Текущая полночь
+
+
+    # Кэшируем до следующей полночи
+    next_reset = last_reset + datetime.timedelta(days=1)
+    timeout = int((next_reset - now).total_seconds()) + 10
+
+    cache.set(
+        get_daily_reset_key(),
+        last_reset,  # Сохраняем время последнего сброса, а не следующего
+        timeout=timeout
+    )
+
+    logger.info(f"[Reset] Last reset: {last_reset}, Next reset: {next_reset}")
+
 def check_daily_reset():
     """Проверяет, наступила ли полночь по Москве"""
-    now = timezone.now().astimezone(pytz.timezone('Europe/Moscow'))
+    moscow_tz = pytz.timezone('Europe/Moscow')
+    now = timezone.now().astimezone(moscow_tz)
     last_reset = cache.get(get_daily_reset_key())
 
+    logger.info(f"[Reset Check] Now: {now.date()}, Last reset: {last_reset.date() if last_reset else 'None'}")
+    logger.info(f"[СБРОС] Проверка времени: {now}")
+
     # Если сброса не было сегодня
-    if not last_reset or last_reset.astimezone(pytz.timezone('Europe/Moscow')).date() < now.date():
+    if not last_reset or last_reset.date() < now.date():
         return True
     return False
 
 
-def perform_daily_reset():
-    """Фиксирует время сброса на текущую полночь"""
-    now = timezone.now().astimezone(pytz.timezone('Europe/Moscow'))
-    next_reset = now.replace(hour=0, minute=0, second=0, microsecond=0) + datetime.timedelta(days=1)
 
-    # Кэшируем до следующей полночи
-    cache.set(
-        get_daily_reset_key(),
-        next_reset,
-        timeout=int((next_reset - now).total_seconds()) + 10  # +10 секунд для надёжности
-    )
-    logger.info(f"Next reset at: {next_reset}")
 
 def home(request):
     return render(request, 'index.html')
@@ -151,3 +163,8 @@ def get_random_cat(request):
     except Exception as e:
         logger.error(f"API Error: {str(e)}", exc_info=True)
         return JsonResponse({'error': 'Internal server error'}, status=500)
+
+def home(request):
+        current_time = timezone.now().astimezone(pytz.timezone('Europe/Moscow'))
+        logger.info(f"Текущее время (Москва): {current_time}")
+        return render(request, 'index.html')

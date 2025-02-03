@@ -1,14 +1,23 @@
 {
   "daily": {
-    "date": "2025-02-03",
-    "count": 2
+    "current": {
+      "date": "2025-02-03",
+      "count": 1
+    },
+    "history": []
   },
   "monthly": {
-    "month": "2025-02",
-    "count": 2
+    "current": {
+      "month": "2025-02",
+      "count": 1
+    },
+    "history": []
   },
   "yearly": {
-    "year": "2025",
-    "count": 2
+    "current": {
+      "year": "2025",
+      "count": 1
+    },
+    "history": []
   }
 }

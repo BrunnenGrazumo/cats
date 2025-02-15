@@ -1,13 +1,13 @@
 /* ==================== БАЗОВЫЕ СТИЛИ ==================== */
 @font-face {
-    font-family: 'Zametka Parletter';
-    src: url('../fonts/zametka-regular.ttf') format('truetype');
+    font-family: 'ITIM';
+    src: url('../fonts/ofont.ru_Itim.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 :root {
-    --main-font: 'Zametka Parletter', cursive;
+    --main-font: 'ITIM', cursive;
     --secondary-font: Arial, sans-serif;
 }
 .main-font {
@@ -147,7 +147,7 @@ body {
 }
 
 .cat-phrase {
-    font-family: var(--main-font);
+    font-family: var(--secondary-font);
     padding: 20px;
     font-size: 1.2rem;
     color: #4a5568;
@@ -177,11 +177,11 @@ body {
 }
 
 .btn-primary.clicked {
-    background: linear-gradient(135deg, #48bb78 0%, #2f855a 100%);
+    background: linear-gradient(135deg, #7ea84f 0%, #66a554 100%);
 }
 
 .btn-warning {
-    background: linear-gradient(135deg, #f6e05e 0%, #d69e2e 100%);
+    background: linear-gradient(135deg, #d69e2e 0%, #ffd224 100%);
     color: #2d3748;
     padding: 10px 20px;
 }
@@ -351,7 +351,7 @@ body {
 }
 
 .pink-stripe {
-    background: #ff69b4;
+    background: #eb7aca;
     padding: 25px 20px;
     margin: 40px 0 0;
     text-align: center;

@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     {% load static %}
-    <!-- Yandex.Metrika counter -->
+    <!-- Yandex.Metrika counter
 <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=qT_iDly7DPfNOxOWun6e3hfRNwOz44tOH5hI3I0_SKIrIXopdcX2WqXMrboY7lDbRac61NxuzufWcIr5JxFvYRiLH8FZReikMBy6wDVPqBwBQ16BmiTk2FIs2-xVpz_xHFy_3zsGbSalhHJQRNJu-fDE40yYUg_ZQOS5gGAKigM" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly93d3cucHl0aG9uYW55d2hlcmUuY29tL3VzZXIvQnJ1bm5lbkdyYXp1bW8vZmlsZXMvaG9tZS9CcnVubmVuR3JhenVtby9jYXRzL3RlbXBsYXRlcy9pbmRleC5odG1s"/><script type="text/javascript" nonce="2778def0652c4a3a9555be0bb91" src="//injections.adguard.org?ts=1738939573112&amp;type=content-script&amp;dmn=www.pythonanywhere.com&amp;url=http%3A%2F%2Fwww.pythonanywhere.com%2Fuser%2FBrunnenGrazumo%2Ffiles%2Fhome%2FBrunnenGrazumo%2Fcats%2Ftemplates%2Findex.html&amp;app=browser.exe&amp;css=3&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script>
 <script type="text/javascript" nonce="2778def0652c4a3a9555be0bb91" src="//injections.adguard.org?ts=1738939573112&amp;name=AdGuard%20Extra&amp;name=AdGuard%20Popup%20Blocker&amp;type=user-script"></script><script type="text/javascript" >
    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -19,10 +19,10 @@
    });
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/99781542" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
+/Yandex.Metrika counter -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Милые котики</title>
+    <title>Предсказания от котика</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -33,7 +33,7 @@
         <!-- Левая часть с лого и текстом -->
         <a href="/" class="brand-link">
             <img src="{% static '/logo.png' %}" alt="Логотип" class="logo">
-            <span class="brand-text">QR-Котик</span>
+            <!--<span class="brand-text">QR-Котик</span>-->
         </a>
 
         <!-- Правая часть с иконками -->
@@ -56,28 +56,28 @@
 <main class="main-content">
     <div class="container">
         <div class="header">
-            <h1 class="main-title">Мяучные предсказания</h1>
+            <h1 class="main-title">Кот судьбы🐾</h1>
         </div>
 
         <div id="catContainer" class="cat-container">
             <div class="cat-card main-font">
-                <img src="{% static 'default_cat.jpg' %}"
+                <img src="{% static 'default_cat.webp' %}"
                      alt="Приветственный котик"
                      class="cat-image"
                      onerror="this.style.display='none'">
-                <p class="cat-phrase">Получить новое предсказание</p>
+                <p class="cat-phrase">Кот-маг в третьем поколении приветствует тебя!<br>Готов получить предсказание на день?</p>
             </div>
         </div>
 
         <div class="button-container main-font">
-            <button class="btn btn-primary" id="loadCats">Получить предсказание от котика</button>
+            <button class="btn btn-primary" id="loadCats">Получить предсказание!</button>
         </div>
     </div>
     <!-- Основной текстовый блок -->
     <div class="content-block">
         <div class="content-text main-font">
-            <p>Делись своим результатом в соцсетях, используя хештег #qr_котик
-Не забудь вернуться завтра за новым пушистиком !</p>
+            <p>Делись своим результатом в соцсетях, используя хештег #котсудьбы
+<br>Не забудь вернуться завтра за новым предсказанием.</p>
         </div>
     </div>
 
@@ -93,12 +93,10 @@
     <!-- Дополнительный текстовый блок -->
     <div class="content-block">
         <div class="content-text main-font">
-            <h2>Добро пожаловать на сайт «qr-котик»!</h2>
-            <p>Все ведь любят котиков ? Их милота и обаяние способны объединить весь мир! Вдохновившись этими пушистиками , я создала уникальные брелочки, которые подарят тебе улыбку в любой ситуации!
-«QR-Котик» - это не просто брелок, а маленький источник радости, созданный для того, чтобы поднимать настроение и напоминать о том, что неважно, грустный ты сегодня, весёлый, озадаченный или сердитый, всегда помни о том,
-что ты котик 💖
-
-Буду рада вашим подпискам (ссылки на мои социальные сети есть наверху страницы), ведь помимо котиков у меня много интересных творческих проектов!</p>
+            <h2>Добро пожаловать на сайт «Кот судьбы»!</h2>
+            <p>ВСЕ ВЕДЬ ЛЮБЯТ КОТИКОВ? ИХ МИЛОТА И ОБАЯНИЕ СПОСОБНЫ ОБЪЕДИНИТЬ ВЕСЬ МИР!
+ВДОХНОВИВШИСЬ ЭТИМИ ПУШИСТИКАМИ Я СОЗДАЛА УНИКАЛЬНЫЕ БРЕЛКИ, КОТОРЫЕ ПОДСКАЖУТ, ЧТО ЖДЕТ ТЕБЯ В СЕГОДНЯШНЕМ ДНЕ И ПОДАРЯТ УЛЫБКУ ПРИ ЛЮБОМ РАСКЛАДЕ! ЭТО НЕ ПРОСТО БРЕЛОК, А МАЛЕНЬКИЙ ИСТОЧНИК РАДОСТИ, СОЗДАННЫЙ ДЛЯ ТОГО, ЧТОБЫ ПОДНИМАТЬ НАСТРОЕНИЕ!
+                <br>Буду рада вашим подпискам (ссылки на мои социальные сети есть наверху страницы), помимо котиков у меня много интересных творческих проектов!</p>
         </div>
     </div>
 
@@ -119,7 +117,7 @@
                  alt="Иконка предупреждения"
                  class="modal-image"
                  onerror="this.style.display='none'">
-            <p class="modal-text">Вы точно хотите получить новое предсказание? Первое самое точное! На новое предсказание мне потребуется больше времени. <br> Но лучше возвращайтесь завтра</p>
+            <p class="modal-text">Вы точно хотите получить новое предсказание? Первое самое точное!<br>На изменение судьбы мне потребуется время.<br>Лучше возвращайтесь завтра!</p>
             <button id="confirmButton" class="btn btn-warning">Я всё понимаю и хочу продолжить</button>
         </div>
     </div>

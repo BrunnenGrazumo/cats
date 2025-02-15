@@ -1,172 +1,332 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const catContainer = document.getElementById('catContainer');
+    // Элементы интерфейса
     const loadButton = document.getElementById('loadCats');
     const preloader = document.querySelector('.preloader');
-    let isFirstClick = true;
-    let isExtendedLoading = false;
-    let resetTimeout = null;
+    const extendedLoader = document.getElementById('extendedLoader');
+    const confirmationModal = document.getElementById('confirmationModal');
+    const confirmButton = document.getElementById('confirmButton');
+    const header = document.querySelector('.header-bar');
+    const mainContent = document.querySelector('.main-content');
+    let ticking = false;
+    let lastScroll = 0;
 
-    async function fetchCats() {
-    if (isFirstClick) {
-        // Первоначальная загрузка
+    // Состояние приложения
+    let state = {
+        isFirstClick: true,
+        currentImage: null,
+        currentPhrase: null,
+        buttonText: 'Получить предсказание от котика'
+    };
+        window.scrollTo(0, 1);
+
+    // Дополнительный фикс для Safari
+    setTimeout(() => {
+        window.scrollTo(0, 1);
+        window.scrollTo(0, 0);
+    }, 100);
+
+    // Инициализация
+    try {
+        // Восстановление состояния
+        const savedState = JSON.parse(localStorage.getItem('catAppState'));
+        if (savedState) {
+            state = savedState;
+            updateUI();
+        }
+
+        // Проверка элементов
+        if (!loadButton || !preloader || !extendedLoader) {
+            throw new Error('Критические элементы DOM не найдены');
+        }
+
+        // Обработчики событий
+        loadButton.addEventListener('click', handleMainButtonClick);
+        confirmButton.addEventListener('click', handleConfirmation);
+
+    } catch (error) {
+        console.error('Фатальная ошибка:', error);
+        showFatalError(error.message);
+    }
+
+    function updateUI() {
+        // Восстановление данных
+        const catImage = document.querySelector('.cat-image');
+        const catPhrase = document.querySelector('.cat-phrase');
+
+        if (state.currentImage) {
+            catImage.onload = () => catImage.style.display = 'block';
+            catImage.src = state.currentImage;
+        }
+
+        if (state.currentPhrase) {
+            catPhrase.textContent = state.currentPhrase;
+        }
+
+        // Обновление кнопки
+        loadButton.textContent = state.buttonText;
+        loadButton.classList.toggle('clicked', !state.isFirstClick);
+    }
+
+    async function handleMainButtonClick() {
         try {
-            preloader.style.display = 'flex';
-            const response = await fetch('/api/cats/');
+            if (state.isFirstClick) {
+                await fetchCat();
+                state.isFirstClick = false;
+                state.buttonText = 'Хочу изменить судьбу!';
+                saveState();
+                updateUI();
+            } else {
+                showModal();
+            }
+        } catch (error) {
+            handleError(error);
+        }
+    }
 
-            if (!response.ok) throw new Error('Ошибка загрузки');
+    async function fetchCat() {
+        togglePreloader(true);
+        try {
+            const response = await fetch('/api/cats/?t=' + Date.now());
+            if (!response.ok) throw new Error(`HTTP ошибка: ${response.status}`);
 
             const data = await response.json();
+
+            // Обработка серверного сброса
+            if (data.is_daily_reset) {
+                localStorage.removeItem('catAppState');
+                window.location.reload();
+                return;
+            }
+
+            state.currentImage = data.image_url;
+            state.currentPhrase = data.phrase;
+
+            saveState();
             updateCat(data);
 
-            loadButton.textContent = 'Хочу другого котика';
-            loadButton.classList.add('clicked');
-            isFirstClick = false;
-
-        } catch (error) {
-            handleError();
         } finally {
-            preloader.style.display = 'none';
+            togglePreloader(false);
         }
-    } else {
-        showModal();
     }
-}
 
     function updateCat(data) {
         const catImage = document.querySelector('.cat-image');
         const catPhrase = document.querySelector('.cat-phrase');
 
         catImage.src = data.image_url;
-        catImage.alt = data.phrase;
+        catImage.alt = data.phrase || 'Изображение котика';
         catPhrase.textContent = data.phrase;
     }
 
-    loadButton.addEventListener('click', fetchCats);
-});
-function showModal() {
-    document.getElementById('confirmationModal').style.display = 'block';
-}
-
-function hideModal() {
-    document.getElementById('confirmationModal').style.display = 'none';
-}
-
-document.getElementById('confirmButton').addEventListener('click', () => {
-    hideModal();
-    startExtendedLoading();
-});
-
-function startExtendedLoading() {
-     if (window.loadingInterval) {
-        clearInterval(window.loadingInterval);
+    // Работа с состоянием
+    function saveState() {
+        localStorage.setItem('catAppState', JSON.stringify({
+            isFirstClick: state.isFirstClick,
+            currentImage: state.currentImage,
+            currentPhrase: state.currentPhrase,
+            buttonText: state.buttonText,
+            timestamp: Date.now()
+        }));
     }
 
-    // Очищаем предыдущий прогресс-бар
-    const loader = document.getElementById('extendedLoader');
-    loader.querySelectorAll('.progress-bar').forEach(el => el.remove());
-    isExtendedLoading = true;
-    const loader = document.getElementById('extendedLoader');
-    const countdownElement = document.getElementById('countdown');
+    // Модальное окно
+    function showModal() {
+        confirmationModal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
 
-    // Удаляем старый прогресс-бар
-    const existingProgress = loader.querySelector('.progress-bar');
-    if (existingProgress) existingProgress.remove();
+    function hideModal() {
+        confirmationModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
 
-    // Создаем новый прогресс-бар
-    const progressBar = document.createElement('div');
-    progressBar.className = 'progress-bar';
-    progressBar.innerHTML = '<div class="progress"></div>';
-    loader.querySelector('.loader').appendChild(progressBar);
+    async function handleConfirmation() {
+        hideModal();
+        await startExtendedLoading();
+    }
 
-    loader.style.display = 'flex';
-    let seconds = 20;
+    // Расширенная загрузка
+    async function startExtendedLoading() {
+        toggleExtendedLoader(true);
 
-    const interval = setInterval(() => {
-        seconds--;
-        countdownElement.textContent = seconds;
-        progressBar.querySelector('.progress').style.width =
-            `${100 - (seconds * 5)}%`;
-
-        if (seconds <= 0) {
-            clearInterval(interval);
-            loader.style.display = 'none';
-            isExtendedLoading = false;
-
-            // Добавляем обработку ошибок
-            fetch('/api/cats/')
-                .then(response => {
-                    if (!response.ok) throw new Error('Ошибка сервера');
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Новые данные:', data); // Логируем ответ
-                    updateCat(data);
-                })
-                .catch(error => {
-                    console.error('Ошибка:', error);
-                    document.querySelector('.cat-phrase').textContent =
-                        'Не удалось загрузить нового котика :(';
-                });
+        try {
+            const data = await loadWithProgress();
+            state.currentImage = data.image_url;
+            state.currentPhrase = data.phrase;
+            saveState();
+            updateCat(data);
+        } catch (error) {
+            handleError(error);
+        } finally {
+            toggleExtendedLoader(false);
         }
-    }, 1000);
-}
+    }
 
-// Сброс в полночь
-function scheduleDailyReset() {
+    function loadWithProgress() {
+        return new Promise((resolve, reject) => {
+            const countdownElement = document.getElementById('countdown');
+            let seconds = 30;
+
+            const interval = setInterval(async () => {
+                seconds--;
+                countdownElement.textContent = seconds;
+
+                if (seconds <= 0) {
+                    clearInterval(interval);
+                    try {
+                        const response = await fetch('/api/cats/');
+                        if (!response.ok) throw new Error('Ошибка сервера');
+                        resolve(await response.json());
+                    } catch (error) {
+                        reject(error);
+                    }
+                }
+            }, 1000);
+        });
+    }
+
+    // Утилиты
+    function togglePreloader(show) {
+        preloader.style.display = show ? 'flex' : 'none';
+    }
+
+    function toggleExtendedLoader(show) {
+        extendedLoader.style.display = show ? 'flex' : 'none';
+    }
+
+    function handleError(error) {
+        console.error('Ошибка:', error);
+        document.querySelector('.cat-phrase').textContent =
+            'Не удалось загрузить котика. Попробуйте позже!';
+        saveState();
+    }
+
+    function showFatalError(message) {
+        document.body.innerHTML = `
+            <div class="container">
+                <h1 style="color: #dc3545; margin-top: 50px;">Ошибка: ${message}</h1>
+                <p>Пожалуйста, перезагрузите страницу</p>
+            </div>
+        `;
+    }
+        window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                const currentScroll = window.scrollY;
+
+                if (currentScroll > 1) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+
+    // Обновляем при изменении размера окна
+    window.addEventListener('resize', () => {
+        mainContent.style.paddingTop = header.offsetHeight + 'px';
+    });
+
+    // Логика для тени при скролле
+    window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    // Обновляем при изменении размера
+
+
+
+    // Логика скрытия/показа шапки
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.scrollY;
+
+        if (currentScroll > lastScroll && currentScroll > 100) {
+            header.classList.add('hidden');
+        } else {
+            header.classList.remove('hidden');
+        }
+
+        lastScroll = currentScroll;
+    });
+    // Функция для обновления отступов
+async function checkDailyReset() {
     const now = new Date();
-    const nextMidnight = new Date(now);
-    nextMidnight.setHours(24, 0, 0, 0);
+    console.log('Клиентское время:', now.toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }));
+        try {
+            const response = await fetch('/api/cats/?t=' + Date.now());
+            if (!response.ok) return;
 
-    const msToMidnight = nextMidnight - now;
-
-    resetTimeout = setTimeout(() => {
-        localStorage.clear();
-        window.location.reload();
-        scheduleDailyReset();
-    }, msToMidnight);
-}
-
-// Инициализация
-document.addEventListener('DOMContentLoaded', () => {
+            const data = await response.json();
+            if (data.is_daily_reset) {
+                localStorage.removeItem('catAppState');
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Ошибка проверки сброса:', error);
+        }
+    }
+ async function initializeApp() {
     try {
-        // Инициализация
-        const loadButton = document.getElementById('loadCats');
-        const preloader = document.querySelector('.preloader');
-        let isFirstClick = true;
+        // 1. Проверка серверного сброса
+        await checkDailyReset();
 
-        // Проверка элементов
-        if (!loadButton || !preloader) {
+        // 2. Работа с localStorage
+        const savedState = JSON.parse(localStorage.getItem('catAppState'));
+
+        if (savedState) {
+            // 3. Проверка времени по Москве
+            const savedDate = new Date(savedState.timestamp);
+            const now = new Date();
+
+            // Приведение к московскому времени (UTC+3)
+            const savedMoscowTime = new Date(savedDate.getTime() + (3 * 60 * 60 * 1000));
+            const currentMoscowTime = new Date(now.getTime() + (3 * 60 * 60 * 1000));
+
+            // Проверка смены даты
+            if (
+                savedMoscowTime.getDate() !== currentMoscowTime.getDate() ||
+                savedMoscowTime.getMonth() !== currentMoscowTime.getMonth() ||
+                savedMoscowTime.getFullYear() !== currentMoscowTime.getFullYear()
+            ) {
+                localStorage.removeItem('catAppState');
+                window.location.reload();
+                return;
+            }
+
+            // 4. Восстановление состояния
+            state = savedState;
+            updateUI();
+        }
+
+        // 5. Инициализация остальных компонентов
+        if (!loadButton || !preloader || !extendedLoader) {
             throw new Error('Критические элементы DOM не найдены');
         }
 
-        // Функции
-        async function fetchCats() {
-            try {
-                preloader.style.display = 'flex';
-                const response = await fetch('/api/cats/');
-
-                if (!response.ok) throw new Error(`HTTP ошибка: ${response.status}`);
-
-                const data = await response.json();
-                updateCat(data);
-
-                loadButton.textContent = 'Хочу другого котика';
-                loadButton.classList.add('clicked');
-                isFirstClick = false;
-
-            } catch (error) {
-                console.error('Ошибка загрузки:', error);
-                alert('Ошибка загрузки: ' + error.message);
-            } finally {
-                preloader.style.display = 'none';
-            }
-        }
-
-        // Назначение обработчика
-        loadButton.addEventListener('click', fetchCats);
+        loadButton.addEventListener('click', handleMainButtonClick);
+        confirmButton.addEventListener('click', handleConfirmation);
 
     } catch (error) {
-        console.error('Фатальная ошибка:', error);
-        document.body.innerHTML = `<h1 style="color:red">Ошибка: ${error.message}</h1>`;
+        console.error('Ошибка инициализации:', error);
+        showFatalError(error.message);
     }
+}
+
+    // Запускаем инициализацию
+    initializeApp();
+
+
+    // Обновляем при изменении размеров
+    window.addEventListener('resize', updateLayout);
+    window.addEventListener('orientationchange', updateLayout);
+
+    // Дополнительный вызов после полной загрузки
+    window.addEventListener('load', () => {
+        setTimeout(updateLayout, 300);
+    });
 });

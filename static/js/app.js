@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (state.isFirstClick) {
                 await fetchCat();
                 state.isFirstClick = false;
-                state.buttonText = 'Получить другое предсказание';
+                state.buttonText = 'Хочу изменить судьбу!';
                 saveState();
                 updateUI();
             } else {
@@ -129,16 +129,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
     }
 
+    const modalContent = document.querySelector('.modal-content');
     // Модальное окно
     function showModal() {
-        confirmationModal.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
+    confirmationModal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+
+    // Добавляем обработчик клика на документ
+    document.addEventListener('click', handleOutsideClick);
+    // Добавляем обработчик для клавиши Esc
+    document.addEventListener('keydown', handleEscapePress);
+}
 
     function hideModal() {
-        confirmationModal.style.display = 'none';
-        document.body.style.overflow = 'auto';
+    confirmationModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+
+    // Удаляем обработчики
+    document.removeEventListener('click', handleOutsideClick);
+    document.removeEventListener('keydown', handleEscapePress);
+}
+
+// Добавьте новые функции-обработчики:
+    function handleOutsideClick(event) {
+    const isClickInside = modalContent.contains(event.target);
+    const isModal = confirmationModal.contains(event.target);
+
+    if (!isClickInside && isModal) {
+        hideModal();
     }
+}
+
+    function handleEscapePress(event) {
+    if (event.key === 'Escape') {
+        hideModal();
+    }
+}
 
     async function handleConfirmation() {
         hideModal();

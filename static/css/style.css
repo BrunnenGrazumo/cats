@@ -186,7 +186,7 @@ body {
 }
 
 .btn-primary.clicked {
-    background: linear-gradient(135deg, #7ea84f 0%, #66a554 100%);
+    background: linear-gradient(135deg, rgba(39, 97, 116, 0.8) 0%, rgba(51, 197, 142, 0.8) 80%, rgba(99, 253, 136, 0.8) 100%);
 }
 
 .btn-warning {

@@ -6,9 +6,18 @@
     font-style: normal;
     font-display: swap;
 }
+
+@font-face {
+    font-family: 'second';
+    src: url('../fonts/Dimkin Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --main-font: 'ITIM', cursive;
-    --secondary-font: Arial, sans-serif;
+    --secondary-font: 'second';
 }
 .main-font {
     font-family: var(--main-font) !important;
@@ -166,7 +175,7 @@ body {
     border: none;
     border-radius: 25px;
     padding: 12px 25px;
-    font-size: 1rem;
+    font-size: 24px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -174,16 +183,18 @@ body {
 .btn-primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
+    opacity: .9;
 }
 
 .btn-primary.clicked {
-    background: linear-gradient(135deg, #7ea84f 0%, #66a554 100%);
+    background: linear-gradient(135deg, rgb(196, 142, 253) 0%, rgb(250, 110, 121) 100%);
 }
 
 .btn-warning {
     background: linear-gradient(135deg, #d69e2e 0%, #ffd224 100%);
     color: #2d3748;
     padding: 10px 20px;
+    font-size: 1.2rem;
 }
 
 /* ==================== МОДАЛЬНОЕ ОКНО ==================== */
@@ -319,8 +330,17 @@ body {
     padding: 0 20px;
 }
 
+.above-content-text {
+    font-family: var(--main-font);
+    font-size: 1.2rem;
+    text-align: center;
+    line-height: 1.6;
+    color: #444;
+    margin: 20px 0;
+    transition: font-size 0.3s ease;
+}
 .content-text {
-    font-family: 'Zametka', sans-serif;
+    font-family: var(--main-font);
     font-size: 1.1rem;
     text-align: center;
     line-height: 1.6;
@@ -372,7 +392,7 @@ body {
 
 @media (max-width: 768px) {
     .content-text {
-        font-size: 1rem;
+        font-size: 0.9rem;
         line-height: 1.5;
         text-align: center;
     }
@@ -414,7 +434,7 @@ body {
     }
 
     .cat-phrase {
-        font-size: 1rem;
+        font-size: 1.2rem;
         padding: 15px;
     }
 
@@ -454,9 +474,15 @@ body {
 
     .btn {
         padding: 10px 18px;
-        font-size: 0.9rem;
+        font-size: 1.2rem;
     }
 
+    .btn-warning {
+    background: linear-gradient(135deg, #d69e2e 0%, #ffd224 100%);
+    color: #2d3748;
+    padding: 10px 20px;
+    font-size: 1rem;
+}
 }
 
 /* ==================== ВСПОМОГАТЕЛЬНЫЕ КЛАССЫ ==================== */

@@ -1,0 +1,34 @@
+
+/* ==================== ВСПОМОГАТЕЛЬНЫЕ КЛАССЫ ==================== */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.highlight {
+    position: relative;
+    display: inline-block;
+}
+
+/* ==================== СПЕЦИФИЧЕСКИЕ НАСТРОЙКИ ДЛЯ SAFARI ==================== */
+@supports (-webkit-touch-callout: none) {
+    .social-link.telegram .social-icon {
+        transform: scale(1.5);
+        margin: -7.5%;
+    }
+
+    .header-bar {
+        -webkit-transform: translate3d(0,0,0);
+        transform: translateZ(0);
+    }
+
+    body {
+        -webkit-overflow-scrolling: touch;
+    }
+}

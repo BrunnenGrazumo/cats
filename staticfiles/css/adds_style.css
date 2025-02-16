@@ -1,0 +1,66 @@
+/* ==================== НОВЫЕ СТИЛИ ==================== */
+.content-block {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.above-content-text {
+    font-family: var(--main-font);
+    font-size: 1.2rem;
+    text-align: center;
+    line-height: 1.6;
+    color: #444;
+    margin: 20px 0;
+    transition: font-size 0.3s ease;
+}
+.content-text {
+    font-family: var(--main-font);
+    font-size: 1.1rem;
+    text-align: center;
+    line-height: 1.6;
+    color: #444;
+    margin: 20px 0;
+    transition: font-size 0.3s ease;
+}
+
+.banner-container {
+    position: relative;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.banner-link {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.banner-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.pink-stripe {
+    background: #eb7aca;
+    padding: 25px 20px;
+    margin: 40px 0 0;
+    text-align: center;
+}
+
+.stripe-text {
+    font-family: 'Zametka', sans-serif;
+    font-size: 1.2rem;
+    color: white;
+    margin: 0;
+}
+.stripe-text .copyright {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif; /* Системный шрифт для iOS */
+    font-weight: normal;
+    position: relative;
+
+}

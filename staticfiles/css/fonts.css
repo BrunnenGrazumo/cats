@@ -1,0 +1,44 @@
+/* ==================== БАЗОВЫЕ СТИЛИ ====================*/
+@font-face {
+    font-family: 'ITIM';
+    src: url('../fonts/ofont.ru_Itim.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'second';
+    src: url('../fonts/Dimkin Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --main-font: 'ITIM', cursive;
+    --secondary-font: 'second';
+}
+.main-font {
+    font-family: var(--main-font) !important;
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: auto !important;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: var(--main-font); /* Основной шрифт для всего сайта */
+    background: linear-gradient(120deg, #ffffff 0%, #ffffff 100%);
+    min-height: 100vh;
+    color: #333;
+    margin: 0;
+    padding-top: 0 !important;
+    overflow-anchor: none;
+}

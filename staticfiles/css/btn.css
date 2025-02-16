@@ -1,0 +1,34 @@
+/* ==================== КНОПКИ ==================== */
+.button-container {
+    margin-top: 10px;
+    padding-bottom: 10px;
+    position: relative;
+    z-index: 2;
+}
+
+.btn {
+    font-family: var(--main-font);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 25px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    opacity: .9;
+}
+
+.btn-primary.clicked {
+    background: linear-gradient(135deg, rgb(196, 142, 253) 0%, rgb(250, 110, 121) 100%);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #d69e2e 0%, #ffd224 100%);
+    color: #2d3748;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+}

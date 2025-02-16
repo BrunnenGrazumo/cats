@@ -1,0 +1,95 @@
+@media (max-width: 768px) {
+    .content-text {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        text-align: center;
+    }
+
+    .banner-container {
+        margin: 20px auto;
+        padding: 0 10px;
+    }
+
+    .banner-image {
+        height: 150px;
+        object-fit: cover;
+    }
+
+    .pink-stripe {
+        padding: 15px 10px;
+    }
+
+    .stripe-text {
+        font-size: 1rem;
+    }
+}
+
+/* ==================== АДАПТИВНОСТЬ ==================== */
+@media (max-width: 768px) {
+    .header {
+        margin: 15px 0 20px;
+    }
+    .header-bar {
+    height: 40px;
+    }
+
+    .main-title {
+        font-size: 2rem;
+    }
+
+    .cat-card {
+        max-width: 90%;
+    }
+
+    .cat-phrase {
+        font-size: 1.2rem;
+        padding: 15px;
+    }
+
+
+    .button-container {
+        margin-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .preloader-gif {
+        width: 280px;
+        height: auto;
+        filter: drop-shadow(0 0 8px rgba(0,0,0,0.1));
+    }
+
+    .social-link {
+        width: 35px;
+        height: 35px;
+        margin: 10px 0;
+    }
+    .modal-content {
+        width: 90vw !important;
+        max-width: none !important;
+        margin: 0; /* Убираем предыдущий margin */
+        transform: translate(-50%, -50%); /* Убираем scale */
+    }
+
+    .modal-text {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin: 10px 0;
+    }
+
+    .modal-image {
+        width: 180px;
+        margin: 5px auto;
+    }
+
+    .btn {
+        padding: 10px 18px;
+        font-size: 1.2rem;
+    }
+
+    .btn-warning {
+    background: linear-gradient(135deg, #d69e2e 0%, #ffd224 100%);
+    color: #2d3748;
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+}

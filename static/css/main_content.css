@@ -1,0 +1,26 @@
+/* ==================== ОСНОВНОЙ КОНТЕНТ ==================== */
+.main-content {
+    margin-top: 0;
+    padding: calc(60px + env(safe-area-inset-top)) 16px 20px 16px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 10px;
+    text-align: center;
+    min-height: auto;
+}
+
+.header {
+    margin: 20px 0 25px;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.main-title {
+    font-family: var(--main-font);
+    font-size: 2.2rem;
+    line-height: 1.15;
+}
